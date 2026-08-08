@@ -1,0 +1,4 @@
+Learn how FastAPI handles requests and responses.
+Practice SQLAlchemy database queries.
+Build a clean frontend for the notes application.
+Review Python functions and data structures.

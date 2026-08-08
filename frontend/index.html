@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Zomato Notes</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🍴 Zomato Notes</h1>
+
+    <p class="subtitle">
+        Save your favourite food and restaurant notes
+    </p>
+
+    <div class="note-form">
+
+        <h2 id="form-title">Add a Note</h2>
+
+        <input
+            type="text"
+            id="title"
+            placeholder="Restaurant or food title"
+        >
+
+        <textarea
+            id="content"
+            placeholder="Write your note here..."
+        ></textarea>
+
+        <input
+            type="text"
+            id="tag"
+            placeholder="Tag (example: food, work, travel)"
+        >
+
+        <p id="form-error" class="error-message"></p>
+
+        <button id="save-button">
+            Add Note
+        </button>
+
+        <button
+            id="cancel-button"
+            class="cancel-button"
+            style="display: none;"
+        >
+            Cancel
+        </button>
+
+    </div>
+
+    <div class="notes-section">
+
+        <h2>My Notes</h2>
+
+        <button
+            id="refresh-button"
+            class="refresh-button"
+        >
+            🔄 Refresh Notes
+        </button>
+
+        <input
+            type="text"
+            id="search-input"
+            placeholder="Search notes..."
+        >
+
+        <div class="tag-filter">
+
+            <label for="tag-filter-input">
+                Filter by tag:
+            </label>
+
+            <input
+                type="text"
+                id="tag-filter-input"
+                placeholder="Enter tag, e.g. work"
+            >
+
+            <button id="tag-filter-button">
+                Filter
+            </button>
+
+            <button id="show-all-button">
+                Show All
+            </button>
+
+        </div>
+
+        <p id="loading-message">
+            Loading notes...
+        </p>
+
+        <p id="error-message" class="error-message"></p>
+
+        <div id="notes-container"></div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
