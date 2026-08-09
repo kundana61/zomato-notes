@@ -26,5 +26,8 @@ class Note(Base):
     tag = Column(String, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    ai_tags = Column(Text, nullable=True)
+    ai_summary = Column(Text, nullable=True)
 
     owner = relationship("User", back_populates="notes")
+

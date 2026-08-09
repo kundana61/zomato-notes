@@ -2,114 +2,236 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zomato Notes</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="container">
+<header>
+    <div class="container">
+        <h1>🍴 Zomato Notes</h1>
+        <p class="subtitle">Save and search your notes quickly</p>
+    </div>
+</header>
 
-    <h1>🍴 Zomato Notes</h1>
+<nav class="top-nav">
+    <div class="container nav-content">
+        <a href="#add-note">Add Note</a>
+        <a href="#notes-section">Notes</a>
+        <a href="#smart-search">Smart Search</a>
+    </div>
+</nav>
 
-    <p class="subtitle">
-        Save your favourite food and restaurant notes
-    </p>
+<main class="container">
 
-    <div class="note-form">
-
+    <section id="add-note" class="note-form">
         <h2 id="form-title">Add a Note</h2>
 
-        <input
-            type="text"
-            id="title"
-            placeholder="Restaurant or food title"
-        >
+        <form id="note-form">
 
-        <textarea
-            id="content"
-            placeholder="Write your note here..."
-        ></textarea>
+            <label for="title">Title</label>
+            <input
+                type="text"
+                id="title"
+                placeholder="Enter note title"
+            >
 
-        <input
-            type="text"
-            id="tag"
-            placeholder="Tag (example: food, work, travel)"
-        >
+            <label for="content">Content</label>
+            <textarea
+                id="content"
+                placeholder="Write your note here..."
+            ></textarea>
 
-        <p id="form-error" class="error-message"></p>
+            <label for="tag">Tag</label>
+            <input
+                type="text"
+                id="tag"
+                placeholder="Tag, example: work, travel"
+            >
 
-        <button id="save-button">
-            Add Note
-        </button>
+            <label for="owner-id">Owner ID</label>
+            <input
+                type="number"
+                id="owner-id"
+                value="1"
+                min="1"
+            >
 
-        <button
-            id="cancel-button"
-            class="cancel-button"
-            style="display: none;"
-        >
-            Cancel
-        </button>
+            <p id="form-error" class="error-message"></p>
 
-    </div>
+            <button id="save-button" type="submit">
+                Add Note
+            </button>
 
-    <div class="notes-section">
+            <button
+                id="cancel-button"
+                class="cancel-button hidden"
+                type="button"
+            >
+                Cancel
+            </button>
 
-        <h2>My Notes</h2>
+        </form>
+    </section>
 
-        <button
-            id="refresh-button"
-            class="refresh-button"
-        >
-            🔄 Refresh Notes
-        </button>
+    <section class="dashboard-grid">
 
-        <input
-            type="text"
-            id="search-input"
-            placeholder="Search notes..."
-        >
+        <aside class="sidebar">
 
-        <div class="tag-filter">
+            <section class="category-section">
+                <h2>Categories</h2>
+                <div id="category-tree"></div>
+            </section>
 
-            <label for="tag-filter-input">
-                Filter by tag:
-            </label>
+            <section class="quick-tags">
+                <h2>Quick Tag Jump</h2>
+                <p>Find the first note with a tag.</p>
+                <div id="quick-tag-buttons"></div>
+            </section>
+
+        </aside>
+
+        <section id="notes-section" class="notes-section">
+
+            <h2>My Notes</h2>
+
+            <button
+                id="refresh-button"
+                class="refresh-button"
+                type="button"
+            >
+                🔄 Refresh Notes
+            </button>
+
+            <div class="search-box">
+
+                <label for="search-input">
+                    Plain Search
+                </label>
+
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search by keyword..."
+                >
+
+                <label for="sort-select">
+                    Sort by
+                </label>
+
+                <select id="sort-select">
+                    <option value="relevance">Relevance</option>
+                    <option value="date">Date</option>
+                </select>
+
+            </div>
+
+            <p id="search-message" class="search-message"></p>
+
+            <div class="tag-filter">
+
+                <label for="tag-filter-input">
+                    Filter by tag:
+                </label>
+
+                <input
+                    type="text"
+                    id="tag-filter-input"
+                    placeholder="Enter tag"
+                >
+
+                <button
+                    id="tag-filter-button"
+                    type="button"
+                >
+                    Filter
+                </button>
+
+                <button
+                    id="show-all-button"
+                    type="button"
+                >
+                    Show All
+                </button>
+
+            </div>
+
+            <section class="exact-search">
+
+                <h3>Jump to Exact Title</h3>
+
+                <input
+                    type="text"
+                    id="exact-title-input"
+                    placeholder="Enter exact note title"
+                >
+
+                <select id="binary-algorithm">
+                    <option value="iterative">Iterative Binary Search</option>
+                    <option value="recursive">Recursive Binary Search</option>
+                </select>
+
+                <button
+                    id="exact-title-button"
+                    type="button"
+                >
+                    Find Title
+                </button>
+
+            </section>
+
+            <p id="loading-message">
+                Loading notes...
+            </p>
+
+            <p id="error-message" class="error-message"></p>
+
+            <div id="notes-container"></div>
+
+        </section>
+
+    </section>
+
+    <section id="smart-search" class="smart-search">
+
+        <h2>🤖 Smart Search (AI)</h2>
+
+        <p>
+            Search notes by meaning using local semantic embeddings.
+        </p>
+
+        <div class="smart-search-controls">
 
             <input
                 type="text"
-                id="tag-filter-input"
-                placeholder="Enter tag, e.g. work"
+                id="smart-search-input"
+                placeholder="Example: dinner ideas with vegetables"
             >
 
-            <button id="tag-filter-button">
-                Filter
-            </button>
-
-            <button id="show-all-button">
-                Show All
+            <button
+                id="smart-search-button"
+                type="button"
+            >
+                Smart Search
             </button>
 
         </div>
 
-        <p id="loading-message">
-            Loading notes...
-        </p>
+        <p
+            id="smart-search-error"
+            class="error-message"
+        ></p>
 
-        <p id="error-message" class="error-message"></p>
+        <div id="smart-search-results"></div>
 
-        <div id="notes-container"></div>
+    </section>
 
-    </div>
+</main>
 
-</div>
+<footer>
+    <p>Zomato Notes</p>
+</footer>
 
 <script src="script.js"></script>
 

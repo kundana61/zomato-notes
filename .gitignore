@@ -4,3 +4,4 @@ notes.db
 .venv/
 venv/
 .vscode/
+.env

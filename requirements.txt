@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+numpy
+python-dotenv
+python-multipart
+sentence-transformers==3.0.0

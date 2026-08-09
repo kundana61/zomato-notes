@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
@@ -20,24 +18,28 @@ class UserResponse(BaseModel):
     id: int
     name: str
     email: EmailStr
-    created_at: datetime
+    created_at: object
 
-    model_config = {
-        "from_attributes": True
-    }
+    class Config:
+        from_attributes = True
 
 
 class NoteCreate(BaseModel):
     title: str = Field(min_length=1, max_length=120)
     content: str = Field(min_length=1)
-    tag: str = Field(min_length=1)
+    tag: str
     owner_id: int
 
 
 class NoteUpdate(BaseModel):
     title: str = Field(min_length=1, max_length=120)
     content: str = Field(min_length=1)
-    tag: str = Field(min_length=1)
+    tag: str
+
+
+class AISuggestion(BaseModel):
+    tags: list[str]
+    summary: str
 
 
 class NoteResponse(BaseModel):
@@ -46,8 +48,8 @@ class NoteResponse(BaseModel):
     content: str
     tag: str
     owner_id: int
-    created_at: datetime
+    created_at: object
+    ai_suggestion: AISuggestion | None = None
 
-    model_config = {
-        "from_attributes": True
-    }
+    class Config:
+        from_attributes = True
