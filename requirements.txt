@@ -6,3 +6,4 @@ numpy
 python-dotenv
 python-multipart
 sentence-transformers==3.0.0
+requests
