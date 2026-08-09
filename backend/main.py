@@ -340,10 +340,7 @@ def smart_search(
     q: str = Query(min_length=1),
     db: Session = Depends(get_db)
 ):
-    notes = crud.get_notes(
-        db,
-        "ai-demo"
-    )
+    notes = crud.get_notes(db)
 
     return semantic_search(
         q,
@@ -489,7 +486,14 @@ async def import_notes(
         )
 
     content = await file.read()
-    text_content = content.decode("utf-8")
+
+    try:
+        text_content = content.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        raise HTTPException(
+            status_code=400,
+            detail="File must be UTF-8 encoded"
+        )
 
     lines = [
         line.strip()
@@ -598,3 +602,4 @@ def user_notes(
         }
         for row in result
     ]
+
