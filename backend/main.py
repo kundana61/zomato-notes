@@ -26,9 +26,11 @@ from backend.algorithms import (
 )
 from backend.semantic_search import semantic_search
 
+
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Zomato Notes API")
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -110,6 +112,16 @@ def create_user(
         )
 
     return crud.create_user(db, user)
+
+
+@app.get(
+    "/users",
+    response_model=list[schemas.UserResponse]
+)
+def get_users(
+    db: Session = Depends(get_db)
+):
+    return db.query(models.User).all()
 
 
 @app.post(
@@ -217,8 +229,15 @@ def search_notes(
         matched_notes = []
 
         for item in note_data:
+            title_lower = item["title"].lower()
             content_lower = item["content"].lower()
-            score = content_lower.count(keyword_lower)
+            tag_lower = item["tag"].lower()
+
+            score = (
+                title_lower.count(keyword_lower) * 3
+                + content_lower.count(keyword_lower)
+                + tag_lower.count(keyword_lower) * 2
+            )
 
             if score > 0:
                 item["score"] = score
@@ -229,13 +248,19 @@ def search_notes(
             "score"
         )
 
+        ranked_notes.reverse()
+
         return ranked_notes[:5]
 
     if sort_by == "date":
-        return insertion_sort_by_key(
+        sorted_notes = insertion_sort_by_key(
             note_data,
             "created_at_epoch"
         )
+
+        sorted_notes.reverse()
+
+        return sorted_notes
 
     return note_data
 
@@ -252,11 +277,9 @@ def lookup_note(
             detail="algo must be iterative or recursive"
         )
 
-    query = db.query(models.Note).order_by(
+    sorted_notes = db.query(models.Note).order_by(
         models.Note.title.asc()
-    )
-
-    sorted_notes = query.all()
+    ).all()
 
     sorted_titles = [
         note.title.lower()
@@ -602,4 +625,3 @@ def user_notes(
         }
         for row in result
     ]
-
